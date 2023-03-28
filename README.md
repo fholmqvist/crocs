@@ -30,26 +30,20 @@ Searching:
 $ crocs string rind
 
 #rindex(search : Char, offset = size - 1)
-
   Returns the index of the last appearance of search in the string, If offset is present, it defines the position to end the search (characters beyond this point are ignored).
 
 #rindex(search : String, offset = size - search.size) : Int32 | Nil
-
   Returns the index of the last appearance of search in the string, If offset is present, it defines the position to end the search (characters beyond this point are ignored).
 
 #rindex(search : Regex, offset = size) : Int32 | Nil
-
   Returns the index of the last appearance of search in the string, If offset is present, it defines the position to end the search (characters beyond this point are ignored).
 
 #rindex!(search : Regex, offset = size) : Int32
-
   Returns the index of the last appearance of search in the string, If offset is present, it defines the position to end the search (characters beyond this point are ignored).
 
 #rindex!(search : String, offset = size - search.size) : Int32
-
   Returns the index of the last appearance of search in the string, If offset is present, it defines the position to end the search (characters beyond this point are ignored).
 
 #rindex!(search : Char, offset = size - 1) : Int32
-
   Returns the index of the last appearance of search in the string, If offset is present, it defines the position to end the search (characters beyond this point are ignored).
 ```
