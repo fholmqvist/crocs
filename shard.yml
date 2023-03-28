@@ -2,12 +2,16 @@ name: crocs
 version: 0.1.0
 
 authors:
-  - your-name-here <fredrik.d.holmqvist@gmail.com>
+  - Fredrik Holmqvist <fredrik.d.holmqvist@gmail.com>
 
 targets:
   crocs:
     main: src/crocs.cr
 
 crystal: 1.7.3
+
+dependencies:
+  lexbor:
+    github: kostya/lexbor
 
 license: MIT
