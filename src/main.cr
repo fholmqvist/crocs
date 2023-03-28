@@ -4,14 +4,23 @@ require "option_parser"
 
 filename = "cache.json"
 version = "1.0"
+entries = ["Enumerable", "Hash", "String", "Time", "Set", "Enum"]
 
 docs = Docs.new
 
 if File.exists?(filename)
   contents = File.read(filename)
   docs = Docs.from_json(contents)
+
+  missing = (docs.entries.to_set ^ entries.to_set).to_a
+
+  if missing.size > 1
+    puts "Not all entries were found in cache, downloading."
+    fetch_from_official_docs(missing, docs, filename)
+  end
 else
-  fetch_from_official_docs(docs, filename)
+  puts "Could not find cache, downloading."
+  fetch_from_official_docs(entries, docs, filename)
 end
 
 namespace = ""

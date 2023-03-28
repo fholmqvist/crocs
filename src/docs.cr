@@ -46,6 +46,10 @@ class Docs
     return {results, errors}
   end
 
+  def entries
+    return @lookups.keys
+  end
+
   def serialize
     return @lookups.to_json
   end

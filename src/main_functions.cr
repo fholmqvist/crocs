@@ -1,11 +1,8 @@
 require "http/client"
 require "lexbor"
 
-def fetch_from_official_docs(docs, filename)
-  puts "Could not find cache, downloading."
-
+def fetch_from_official_docs(entries, docs, filename)
   channel = Channel({String, Doc}).new
-  entries = ["Enumerable", "Hash", "String", "Time"]
 
   puts "Making requests to: #{entries.join(", ")}."
 
