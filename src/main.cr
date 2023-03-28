@@ -40,6 +40,7 @@ OptionParser.parse do |parser|
   parser.on "-h", "--help", "Show help" do
     puts parser
     puts "\nNamespace and method can also be passed as args: './crocs string rind'"
+    puts "Method can be omitted to list all instance methods."
     exit
   end
 
@@ -83,23 +84,13 @@ OptionParser.parse do |parser|
   global_parser.unknown_args do |options|
     if options.size == 2
       namespace, method = options
+    elsif options.size == 1
+      namespace = options[0]
     end
   end
 end
 
-if namespace.size > 0 && method.size == 0
-  STDERR.puts "ERROR: Searching requires both a namespace and a method to be searched for.\n\n"
-  STDERR.puts global_parser
-  exit(1)
-end
-
-if namespace.size == 0 && method.size > 0
-  STDERR.puts "ERROR: Searching requires both a namespace and a method to be searched for.\n\n"
-  STDERR.puts global_parser
-  exit(1)
-end
-
-if namespace.size > 0 && method.size > 0
+if namespace.size > 0
   results, errors = docs.find(namespace, method)
 
   if errors.size > 0

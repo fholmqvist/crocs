@@ -10,19 +10,24 @@ I wrote this tool to decrease the pain of working without modern tooling. It's m
 
 ## Usage
 
-Help.
+Help:
 ```
-$ crocs -h
 Crocs!
     -v, --version                    Show version
     -h, --help                       Show help
     -n NAME, --namespace NAME        Namespace to search in
     -m NAME, --method NAME           Method to search for
+    -l, --list                       List cache entries
+    -a, --add                        Add an entry to the cache
+    -c, --clear                      Clear the cache
+
+Namespace and method can also be passed as args: './crocs string rind'
+Method can be omitted to list all instance methods.
 ```
 
-Searching.
+Searching:
 ```
-$ crocs -n string -m rind
+$ crocs string rind
 
 #rindex(search : Char, offset = size - 1)
 
