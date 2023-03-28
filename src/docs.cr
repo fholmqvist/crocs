@@ -1,3 +1,5 @@
+require "./doc"
+
 class Docs
   @lookups : Hash(String, Doc)
 

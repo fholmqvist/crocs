@@ -1,15 +1,4 @@
-require "./docs"
-require "http/client"
-require "lexbor"
-
-puts "Starting."
-
-channel = Channel({String, Doc}).new
-entries = ["Enumerable", "Hash", "String", "Time"]
-
-puts "TODO: Store entries."
-
-entries.each { |entry|
+def fetch_entry(entry, channel)
   puts "TODO: Entry '#{entry}' not found, fetching."
 
   spawn do
@@ -51,34 +40,24 @@ entries.each { |entry|
 
     channel.send({entry, doc})
   end
-}
+end
 
-docs = Docs.new
-
-puts "Waiting."
-
-entries.size.times do
-  entry, doc = channel.receive
-  if entry != ""
-    docs.insert(entry, doc)
+def wait_for_fetches(entries, channel, docs)
+  entries.size.times do
+    entry, doc = channel.receive
+    if entry != ""
+      docs.insert(entry, doc)
+    end
   end
 end
 
-puts "Done."
-
-results, errors = docs.find("string inde")
-
-puts "Searching."
-
-if errors.size > 0
-  puts errors
-end
-
-results.each do |namespace|
-  namespace.each do |method|
-    method.each do |line|
-      puts line
+def print_results(results)
+  results.each do |namespace|
+    namespace.each do |method|
+      method.each do |line|
+        puts line
+      end
+      puts "\n"
     end
-    puts "\n"
   end
 end
