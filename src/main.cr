@@ -4,7 +4,7 @@ require "option_parser"
 
 filename = "cache.json"
 version = "1.0"
-entries = ["Enumerable", "Hash", "String", "Time", "Set", "Enum"]
+default_entries = ["Enumerable", "Hash", "String", "Time", "Set", "Enum"]
 
 docs = Docs.new
 
@@ -12,7 +12,7 @@ if File.exists?(filename)
   contents = File.read(filename)
   docs = Docs.from_json(contents)
 
-  missing = (docs.entries.to_set ^ entries.to_set).to_a
+  missing = (docs.entries.to_set ^ default_entries.to_set).to_a
 
   if missing.size > 1
     puts "Not all entries were found in cache, downloading."
@@ -20,7 +20,7 @@ if File.exists?(filename)
   end
 else
   puts "Could not find cache, downloading."
-  fetch_from_official_docs(entries, docs, filename)
+  fetch_from_official_docs(default_entries, docs, filename)
 end
 
 namespace = ""
@@ -56,6 +56,15 @@ OptionParser.parse do |parser|
     docs.entries.each do |entry|
       puts "  - #{entry}"
     end
+    exit
+  end
+
+  parser.on "-a", "--add", "Add an entry to the cache" do |new_entry|
+    default_entries.push(new_entry)
+  end
+
+  parser.on "-c", "--clear", "Clear the cache" do
+    File.delete(filename)
     exit
   end
 
