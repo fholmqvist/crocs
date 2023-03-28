@@ -22,6 +22,8 @@ class Doc
   end
 
   def insert(method_name, method)
+    method_name = method_name.downcase
+
     if @lookup.has_key?(method_name)
       @lookup[method_name].push(method)
     else
@@ -30,6 +32,8 @@ class Doc
   end
 
   def find(method)
+    method = method.downcase
+
     result = [] of Array(String)
     @lookup.each_key { |entry|
       if entry.includes?(method)

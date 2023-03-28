@@ -1,3 +1,30 @@
+require "http/client"
+require "lexbor"
+
+def fetch_from_official_docs(docs, filename)
+  puts "Could not find cache, downloading."
+
+  channel = Channel({String, Doc}).new
+  entries = ["Enumerable", "Hash", "String", "Time"]
+
+  puts "Making requests to: #{entries.join(", ")}."
+
+  entries.each { |entry| fetch_entry(entry, channel) }
+
+  puts "Waiting for requests to finish."
+
+  wait_for_fetches(entries, channel, docs)
+
+  puts "Done."
+
+  puts "Saving to disk."
+
+  json = docs.serialize
+  File.write(filename, %({"lookups": #{json}}))
+
+  puts "Done."
+end
+
 def fetch_entry(entry, channel)
   spawn do
     response = HTTP::Client.get "https://crystal-lang.org/api/1.7.3/#{entry}.html"

@@ -1,9 +1,9 @@
 require "./main_functions"
 require "./docs"
-require "http/client"
-require "lexbor"
+require "option_parser"
 
 filename = "cache.json"
+version = "1.0"
 
 docs = Docs.new
 
@@ -11,38 +11,73 @@ if File.exists?(filename)
   contents = File.read(filename)
   docs = Docs.from_json(contents)
 else
-  puts "Could not find cache, downloading."
-
-  channel = Channel({String, Doc}).new
-  entries = ["Enumerable", "Hash", "String", "Time"]
-
-  puts "Making requests to: #{entries.join(", ")}."
-
-  entries.each { |entry| fetch_entry(entry, channel) }
-
-  puts "Waiting for requests to finish."
-
-  wait_for_fetches(entries, channel, docs)
-
-  puts "Done."
-
-  puts "Saving to disk."
-
-  json = docs.serialize
-  File.write(filename, %({"lookups": #{json}}))
-
-  puts "Done."
+  fetch_from_official_docs(docs, filename)
 end
 
-results, errors = docs.find("string inde")
+namespace = ""
+method = ""
+root_parser = nil
 
-puts "Searching."
+OptionParser.parse do |parser|
+  root_parser = parser
 
-if errors.size > 0
-  puts errors
-else
-  puts "Done.\n\n"
-  puts "========\n\n"
-  print_results(results)
-  puts "========\n\n"
+  parser.banner = "Crocs!"
+
+  parser.on "-v", "--version", "Show version" do
+    puts version
+    exit
+  end
+
+  parser.on "-h", "--help", "Show help" do
+    puts parser
+    exit
+  end
+
+  parser.on "-n NAME", "--namespace NAME", "Namespace to search in" do |name|
+    namespace = name
+  end
+
+  parser.on "-m NAME", "--method NAME", "Method to search for" do |name|
+    method = name
+  end
+
+  parser.missing_option do |option_flag|
+    STDERR.puts "ERROR: #{option_flag} is missing something.\n\n"
+    STDERR.puts parser
+    exit(1)
+  end
+
+  parser.invalid_option do |option_flag|
+    STDERR.puts "ERROR: #{option_flag} is not a valid option.\n\n"
+    STDERR.puts parser
+    exit(1)
+  end
+end
+
+if namespace.size > 0 && method.size == 0
+  STDERR.puts "ERROR: Searching requires both a namespace and a method to be searched for."
+  STDERR.puts "\n#{root_parser}"
+  exit(1)
+end
+
+if namespace.size == 0 && method.size > 0
+  STDERR.puts "ERROR: Searching requires both a namespace and a method to be searched for."
+  STDERR.puts "\n#{root_parser}"
+  exit(1)
+end
+
+if namespace && method
+  results, errors = docs.find(namespace, method)
+
+  if errors.size > 0
+    errors.each do |error|
+      STDERR.puts "ERROR: #{error}"
+    end
+
+    STDERR.puts "\n#{root_parser}"
+  else
+    puts "\n========\n\n"
+    print_results(results)
+    puts "========\n\n"
+  end
 end

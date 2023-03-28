@@ -24,25 +24,23 @@ class Docs
     }
   end
 
-  def find(namespace_space_method) : {Array(Array(Array(String))), Array(String)}
-    namespace, method = namespace_space_method.split(" ")
-    namespace = namespace.strip.capitalize
-    method = method.strip
+  def find(namespace, method) : {Array(Array(Array(String))), Array(String)}
+    namespace = namespace.capitalize
 
     results = [] of Array(Array(String))
     errors = [] of String
 
     if @lookups.has_key?(namespace)
-      doc = @lookups[namespace.capitalize]
+      doc = @lookups[namespace]
       result = doc.find(method)
 
       if result.size > 0
         results.push(result)
       else
-        errors.push("could not find method #{method} in #{namespace}")
+        errors.push("Could not find method '#{method}' in '#{namespace}'.")
       end
     else
-      return {[] of Array(Array(String)), ["could not find namespace #{namespace}"]}
+      return {[] of Array(Array(String)), ["Could not find namespace '#{namespace}'."]}
     end
 
     return {results, errors}
