@@ -87,8 +87,8 @@ def print_results(results)
         else
           puts "  #{line}"
           first = true
+          puts "\n"
         end
-        puts "\n"
       end
     end
   end

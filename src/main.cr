@@ -16,10 +16,10 @@ end
 
 namespace = ""
 method = ""
-root_parser = nil
+global_parser = nil
 
 OptionParser.parse do |parser|
-  root_parser = parser
+  global_parser = parser
 
   parser.banner = "Crocs!"
 
@@ -30,6 +30,7 @@ OptionParser.parse do |parser|
 
   parser.on "-h", "--help", "Show help" do
     puts parser
+    puts "\nNamespace and method can also be passed as args: './crocs string rind'"
     exit
   end
 
@@ -52,17 +53,23 @@ OptionParser.parse do |parser|
     STDERR.puts parser
     exit(1)
   end
+
+  global_parser.unknown_args do |options|
+    if options.size == 2
+      namespace, method = options
+    end
+  end
 end
 
 if namespace.size > 0 && method.size == 0
   STDERR.puts "ERROR: Searching requires both a namespace and a method to be searched for.\n\n"
-  STDERR.puts root_parser
+  STDERR.puts global_parser
   exit(1)
 end
 
 if namespace.size == 0 && method.size > 0
   STDERR.puts "ERROR: Searching requires both a namespace and a method to be searched for.\n\n"
-  STDERR.puts root_parser
+  STDERR.puts global_parser
   exit(1)
 end
 
@@ -74,11 +81,11 @@ if namespace.size > 0 && method.size > 0
       STDERR.puts "ERROR: #{error}"
     end
 
-    STDERR.puts "\n#{root_parser}"
+    STDERR.puts "\n#{global_parser}"
   else
     print_results(results)
   end
   puts ""
 else
-  puts root_parser
+  puts global_parser
 end
