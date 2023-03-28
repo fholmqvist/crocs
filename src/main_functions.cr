@@ -1,6 +1,4 @@
 def fetch_entry(entry, channel)
-  puts "TODO: Entry '#{entry}' not found, fetching."
-
   spawn do
     response = HTTP::Client.get "https://crystal-lang.org/api/1.7.3/#{entry}.html"
 

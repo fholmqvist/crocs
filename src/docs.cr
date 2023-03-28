@@ -1,6 +1,9 @@
 require "./doc"
+require "json"
 
 class Docs
+  include JSON::Serializable
+
   @lookups : Hash(String, Doc)
 
   def initialize
@@ -43,5 +46,9 @@ class Docs
     end
 
     return {results, errors}
+  end
+
+  def serialize
+    return @lookups.to_json
   end
 end

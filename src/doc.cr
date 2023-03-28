@@ -1,4 +1,8 @@
+require "json"
+
 class Doc
+  include JSON::Serializable
+
   @lookup : Hash(String, Array(Array(String)))
 
   def initialize
