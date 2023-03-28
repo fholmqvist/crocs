@@ -24,7 +24,24 @@ require "lexbor"
       .reject { |line| line == "" }
   }
 
+  lookup = {} of String => Array(Array(String))
   methods.each { |method|
-    puts method
+    # Remove everything after first parens of space-colon-space, trim end.
+    method_name = method[0][1..method[0].index("(")]
+    method_name = method_name[0..method_name.index(" : ")]
+    method_name = method_name[0..method_name.size - 2]
+
+    if lookup.has_key?(method_name)
+      lookup[method_name].push(method)
+    else
+      lookup[method_name] = [method]
+    end
+  }
+
+  lookup.each { |k, vs|
+    puts k
+    vs.each { |v|
+      puts "  - #{v}"
+    }
   }
 end
