@@ -76,8 +76,7 @@ if namespace && method
 
     STDERR.puts "\n#{root_parser}"
   else
-    puts "\n========\n\n"
+    puts "\n"
     print_results(results)
-    puts "========\n"
   end
 end

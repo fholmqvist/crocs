@@ -9,13 +9,42 @@ Crystal is an _amazing_ language! Seriously, it's a complete joy to work with. Y
 I wrote this tool to decrease the pain of working without modern tooling. It's my hope that this tool becomes redundant as soon as possible.
 
 ## Usage
-```bash
+
+Help.
+```
 $ crocs -h
 Crocs!
     -v, --version                    Show version
     -h, --help                       Show help
     -n NAME, --namespace NAME        Namespace to search in
     -m NAME, --method NAME           Method to search for
+```
 
-$ crocs -n string -m incl
+Searching.
+```
+$ crocs -n string -m rind
+
+#rindex(search : Char, offset = size - 1)
+
+  Returns the index of the last appearance of search in the string, If offset is present, it defines the position to end the search (characters beyond this point are ignored).
+
+#rindex(search : String, offset = size - search.size) : Int32 | Nil
+
+  Returns the index of the last appearance of search in the string, If offset is present, it defines the position to end the search (characters beyond this point are ignored).
+
+#rindex(search : Regex, offset = size) : Int32 | Nil
+
+  Returns the index of the last appearance of search in the string, If offset is present, it defines the position to end the search (characters beyond this point are ignored).
+
+#rindex!(search : Regex, offset = size) : Int32
+
+  Returns the index of the last appearance of search in the string, If offset is present, it defines the position to end the search (characters beyond this point are ignored).
+
+#rindex!(search : String, offset = size - search.size) : Int32
+
+  Returns the index of the last appearance of search in the string, If offset is present, it defines the position to end the search (characters beyond this point are ignored).
+
+#rindex!(search : Char, offset = size - 1) : Int32
+
+  Returns the index of the last appearance of search in the string, If offset is present, it defines the position to end the search (characters beyond this point are ignored).
 ```
