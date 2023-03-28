@@ -78,6 +78,6 @@ if namespace && method
   else
     puts "\n========\n\n"
     print_results(results)
-    puts "========\n\n"
+    puts "========\n"
   end
 end

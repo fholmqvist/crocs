@@ -78,11 +78,18 @@ end
 
 def print_results(results)
   results.each do |namespace|
-    namespace.each do |method|
-      method.each do |line|
-        puts line
+    namespace.each do |method_lines|
+      first = true
+      method_lines.each do |line|
+        if first
+          puts line
+          first = false
+        else
+          puts "  #{line}"
+          first = true
+        end
+        puts "\n"
       end
-      puts "\n"
     end
   end
 end
