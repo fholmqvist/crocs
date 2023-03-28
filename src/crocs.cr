@@ -1,9 +1,10 @@
+require "./docs"
 require "http/client"
 require "lexbor"
 
-# "Hash", "String", "Time"
+docs = Docs.new
 
-{"Enumerable"}.each do |entry|
+{"Enumerable", "Hash", "String", "Time"}.each do |entry|
   response = HTTP::Client.get "https://crystal-lang.org/api/1.7.3/#{entry}.html"
   instance_methods = response.body.lines
     .skip_while { |line|
@@ -24,24 +25,17 @@ require "lexbor"
       .reject { |line| line == "" }
   }
 
-  lookup = {} of String => Array(Array(String))
+  doc = Doc.new
   methods.each { |method|
-    # Remove everything after first parens of space-colon-space, trim end.
+    # Remove everything after first parens or space-colon-space, trim end.
     method_name = method[0][1..method[0].index("(")]
     method_name = method_name[0..method_name.index(" : ")]
     method_name = method_name[0..method_name.size - 2]
 
-    if lookup.has_key?(method_name)
-      lookup[method_name].push(method)
-    else
-      lookup[method_name] = [method]
-    end
+    doc.insert(method_name, method)
   }
 
-  lookup.each { |k, vs|
-    puts k
-    vs.each { |v|
-      puts "  - #{v}"
-    }
-  }
+  docs.insert(entry, doc)
 end
+
+docs.inspect
