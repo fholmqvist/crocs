@@ -38,4 +38,17 @@ docs = Docs.new
   docs.insert(entry, doc)
 end
 
-docs.inspect
+results, errors = docs.find("string inde")
+
+if errors.size > 0
+  puts errors
+end
+
+results.each do |namespace|
+  namespace.each do |method|
+    method.each do |line|
+      puts line
+    end
+    puts "\n"
+  end
+end

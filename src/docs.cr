@@ -18,32 +18,28 @@ class Docs
       doc.inspect
     }
   end
-end
 
-class Doc
-  @lookup : Hash(String, Array(Array(String)))
+  def find(namespace_space_method) : {Array(Array(Array(String))), Array(String)}
+    namespace, method = namespace_space_method.split(" ")
+    namespace = namespace.strip.capitalize
+    method = method.strip
 
-  def initialize
-    @lookup = {} of String => Array(Array(String))
-  end
+    results = [] of Array(Array(String))
+    errors = [] of String
 
-  def initialize(@lookup)
-  end
+    if @lookups.has_key?(namespace)
+      doc = @lookups[namespace.capitalize]
+      result = doc.find(method)
 
-  def inspect
-    @lookup.each { |k, vs|
-      puts k
-      vs.each { |v|
-        puts "  - #{v}"
-      }
-    }
-  end
-
-  def insert(method_name, method)
-    if @lookup.has_key?(method_name)
-      @lookup[method_name].push(method)
+      if result.size > 0
+        results.push(result)
+      else
+        errors.push("could not find method #{method} in #{namespace}")
+      end
     else
-      @lookup[method_name] = [method]
+      return {[] of Array(Array(String)), ["could not find namespace #{namespace}"]}
     end
+
+    return {results, errors}
   end
 end
