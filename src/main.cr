@@ -51,6 +51,14 @@ OptionParser.parse do |parser|
     method = name
   end
 
+  parser.on "-l", "--list", "List cache entries" do
+    puts "Entries in cache:"
+    docs.entries.each do |entry|
+      puts "  - #{entry}"
+    end
+    exit
+  end
+
   parser.missing_option do |option_flag|
     STDERR.puts "ERROR: #{option_flag} is missing something.\n\n"
     STDERR.puts parser
@@ -94,7 +102,6 @@ if namespace.size > 0 && method.size > 0
   else
     print_results(results)
   end
-  puts ""
 else
   puts global_parser
 end
