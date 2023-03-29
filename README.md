@@ -25,7 +25,6 @@ Installed crocs OK.
 Help:
 ```
 $ crocs -h
-
 crocs!
     -v, --version                    Show version
     -h, --help                       Show help
@@ -42,7 +41,6 @@ Method can be omitted to list all instance methods.
 Searching:
 ```
 $ crocs string rind
-
 #rindex(search : Char, offset = size - 1)
   Returns the index of the last appearance of search in the string, If offset is present, it defines the position to end the search (characters beyond this point are ignored).
 
