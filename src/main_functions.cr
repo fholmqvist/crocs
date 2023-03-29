@@ -2,7 +2,7 @@ require "http/client"
 require "lexbor"
 
 def fetch_from_official_docs(entries, docs, filename)
-  channel = Channel({String, Doc}).new
+  channel = Channel({String, Doc, String | Nil}).new
 
   puts "Making requests to: #{entries.join(", ")}."
 
@@ -24,14 +24,14 @@ end
 
 def fetch_entry(entry, channel)
   spawn do
-    response =
-      HTTP::Client.get "https://crystal-lang.org/api/1.7.3/#{entry.capitalize}.html"
+    url = "https://crystal-lang.org/api/1.7.3/#{entry.capitalize}.html"
 
-    # TODO: Handle errors here instead
-    #       of shoving them underneath
-    #       the carpet.
+    response =
+      HTTP::Client.get url
+
     if response.status_code != 200
-      channel.send({"", Doc.new})
+      channel.send({"", Doc.new,
+                    "ERROR: Could not fetch: #{url}"})
       next
     end
 
@@ -64,13 +64,17 @@ def fetch_entry(entry, channel)
       doc.insert(method_name, method)
     }
 
-    channel.send({entry, doc})
+    channel.send({entry, doc, nil})
   end
 end
 
 def wait_for_fetches(entries, channel, docs)
   entries.size.times do
-    entry, doc = channel.receive
+    entry, doc, error = channel.receive
+    if error
+      STDERR.puts error
+      exit(1)
+    end
     if entry != ""
       docs.insert(entry, doc)
     end
