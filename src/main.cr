@@ -8,19 +8,19 @@ default_entries = ["Enumerable", "Hash", "String", "Time", "Set", "Enum"]
 
 docs = Docs.new
 
-if File.exists?(filename)
-  contents = File.read(filename)
-  docs = Docs.from_json(contents)
-
-  missing = (docs.entries.to_set ^ default_entries.to_set).to_a
-
-  if missing.size > 1
-    puts "Not all entries were found in cache, downloading."
-    fetch_from_official_docs(missing, docs, filename)
-  end
-else
+if !File.exists?(filename)
   puts "Could not find cache, downloading."
   fetch_from_official_docs(default_entries, docs, filename)
+end
+
+contents = File.read(filename)
+docs = Docs.from_json(contents)
+
+missing = (docs.entries.to_set ^ default_entries.to_set).to_a
+
+if missing.size > 1
+  puts "Not all entries were found in cache, downloading."
+  fetch_from_official_docs(missing, docs, filename)
 end
 
 namespace = ""
@@ -90,23 +90,27 @@ OptionParser.parse do |parser|
   end
 end
 
-if namespace.size > 0
-  if !docs.has_entry?(namespace)
-    puts "Could not find entry '#{namespace}' in cache, downloading."
-    fetch_from_official_docs([namespace], docs, filename)
-  end
-
-  results, errors = docs.find(namespace, method)
-
-  if errors.size > 0
-    errors.each do |error|
-      STDERR.puts "ERROR: #{error}"
-    end
-
-    STDERR.puts "\n#{global_parser}"
-  else
-    print_results(results)
-  end
-else
+if namespace.size == 0
   puts global_parser
+  exit
 end
+
+namespace = namespace.capitalize
+
+if !docs.has_entry?(namespace)
+  puts "Could not find entry '#{namespace}' in cache, downloading."
+  fetch_from_official_docs([namespace], docs, filename)
+end
+
+results, errors = docs.find(namespace, method)
+
+if errors.size == 0
+  print_results(results)
+  exit
+end
+
+errors.each do |error|
+  STDERR.puts "ERROR: #{error}"
+end
+
+STDERR.puts "\n#{global_parser}"
