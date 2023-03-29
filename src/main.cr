@@ -30,7 +30,7 @@ global_parser = nil
 OptionParser.parse do |parser|
   global_parser = parser
 
-  parser.banner = "Crocs!"
+  parser.banner = "crocs!"
 
   parser.on "-v", "--version", "Show version" do
     puts version
