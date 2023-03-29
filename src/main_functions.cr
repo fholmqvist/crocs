@@ -24,7 +24,8 @@ end
 
 def fetch_entry(entry, channel)
   spawn do
-    response = HTTP::Client.get "https://crystal-lang.org/api/1.7.3/#{entry}.html"
+    response =
+      HTTP::Client.get "https://crystal-lang.org/api/1.7.3/#{entry.capitalize}.html"
 
     if response.status_code != 200
       channel.send({"", Doc.new})

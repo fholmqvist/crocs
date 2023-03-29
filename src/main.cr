@@ -91,6 +91,11 @@ OptionParser.parse do |parser|
 end
 
 if namespace.size > 0
+  if !docs.has_entry?(namespace)
+    puts "Could not find entry '#{namespace}' in cache, downloading."
+    fetch_from_official_docs([namespace], docs, filename)
+  end
+
   results, errors = docs.find(namespace, method)
 
   if errors.size > 0

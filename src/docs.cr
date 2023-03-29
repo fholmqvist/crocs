@@ -50,6 +50,10 @@ class Docs
     return @lookups.keys
   end
 
+  def has_entry?(entry)
+    return @lookups.has_key?(entry)
+  end
+
   def serialize
     return @lookups.to_json
   end
