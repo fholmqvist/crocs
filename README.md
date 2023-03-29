@@ -13,6 +13,15 @@ I strongly believe that the sole thing that's holding Crystal back is the dev ex
 
 ## Usage
 
+Install:
+```
+$ make install
+crystal build --release src/main.cr
+sudo mv main /usr/bin/ crocs
+[sudo] password for user:
+Installed crocs OK.
+```
+
 Help:
 ```
 crocs!
