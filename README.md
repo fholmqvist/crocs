@@ -24,6 +24,8 @@ Installed crocs OK.
 
 Help:
 ```
+$ crocs -h
+
 crocs!
     -v, --version                    Show version
     -h, --help                       Show help
