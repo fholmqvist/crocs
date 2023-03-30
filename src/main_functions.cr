@@ -36,12 +36,7 @@ def fetch_entry(entry, channel)
     end
 
     instance_methods = response.body.lines
-      .skip_while { |line|
-        line.includes? "Instance Method Detail"
-      }
-      .take_while { |line|
-        !line.includes? "View source"
-      }
+      .skip_while { |line| line.includes? "Instance Method Detail" }
 
     parser = Lexbor::Parser.new(instance_methods.join("\n"))
 
