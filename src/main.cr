@@ -104,13 +104,13 @@ end
 
 results, errors = docs.find(namespace, method)
 
-if errors.size == 0
-  print_results(results)
+if errors.size > 0
+  errors.each do |error|
+    STDERR.puts "ERROR: #{error}"
+  end
+
+  STDERR.puts "\n#{global_parser}"
   exit
 end
 
-errors.each do |error|
-  STDERR.puts "ERROR: #{error}"
-end
-
-STDERR.puts "\n#{global_parser}"
+print_results(results)
