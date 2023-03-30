@@ -2,25 +2,25 @@ require "./main_functions"
 require "./docs"
 require "option_parser"
 
-filename = "cache.json"
+cache_file = "cache.json"
 version = "1.0"
 default_entries = ["Enumerable", "Hash", "String", "Time", "Set", "Enum"]
 
 docs = Docs.new
 
-if !File.exists?(filename)
+if !File.exists?(cache_file)
   puts "Could not find cache, downloading."
-  fetch_from_official_docs(default_entries, docs, filename)
+  fetch_from_official_docs(default_entries, docs, cache_file)
 end
 
-contents = File.read(filename)
+contents = File.read(cache_file)
 docs = Docs.from_json(contents)
 
 missing = (docs.entries.to_set ^ default_entries.to_set).to_a
 
 if missing.size > 1
   puts "Not all entries were found in cache, downloading."
-  fetch_from_official_docs(missing, docs, filename)
+  fetch_from_official_docs(missing, docs, cache_file)
 end
 
 namespace = ""
@@ -65,7 +65,7 @@ OptionParser.parse do |parser|
   end
 
   parser.on "-c", "--clear", "Clear the cache" do
-    File.delete(filename)
+    File.delete(cache_file)
     exit
   end
 
@@ -99,7 +99,7 @@ namespace = namespace.capitalize
 
 if !docs.has_entry?(namespace)
   puts "Could not find entry '#{namespace}' in cache, downloading."
-  fetch_from_official_docs([namespace], docs, filename)
+  fetch_from_official_docs([namespace], docs, cache_file)
 end
 
 results, errors = docs.find(namespace, method)
