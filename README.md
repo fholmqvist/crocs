@@ -4,8 +4,6 @@ DOA; turns out there's a little something called [Crystalline](https://github.co
 <br>
 This is why you search before you implement...
 
-<br>
-
 ## Usage
 
 Install:
