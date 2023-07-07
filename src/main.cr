@@ -1,5 +1,6 @@
 require "./main_functions"
 require "./docs"
+require "./doc"
 require "option_parser"
 
 cache_file = "cache.json"

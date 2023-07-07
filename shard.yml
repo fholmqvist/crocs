@@ -14,4 +14,7 @@ dependencies:
   lexbor:
     github: kostya/lexbor
 
+crystalline:
+  main: src/main.cr
+
 license: MIT

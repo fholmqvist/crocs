@@ -1,8 +1,6 @@
 # crocs!
 
-DOA; turns out there's a little something called [Crystalline](https://github.com/elbywan/crystalline)!
-<br>
-This is why you search before you implement...
+A small CLI tool for looking up Crystal API documentation for when the LSP fails to do so.
 
 ## Usage
 

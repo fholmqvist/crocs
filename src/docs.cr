@@ -24,7 +24,7 @@ class Docs
     }
   end
 
-  def find(namespace, method) : {Array(Array(Array(String))), Array(String)}
+  def find(namespace : String, method : String) : {Array(Array(Array(String))), Array(String)}
     namespace = namespace.capitalize
 
     results = [] of Array(Array(String))
@@ -46,15 +46,15 @@ class Docs
     return {results, errors}
   end
 
-  def entries
+  def entries() : Array(String)
     return @lookups.keys
   end
 
-  def has_entry?(entry)
+  def has_entry?(entry) : Bool
     return @lookups.has_key?(entry)
   end
 
-  def serialize
+  def serialize() : String
     return @lookups.to_json
   end
 end

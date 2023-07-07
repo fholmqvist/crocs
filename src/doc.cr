@@ -21,7 +21,7 @@ class Doc
     }
   end
 
-  def insert(method_name, method)
+  def insert(method_name : String, method : Array(String))
     method_name = method_name.downcase
 
     if @lookup.has_key?(method_name)
@@ -31,7 +31,7 @@ class Doc
     end
   end
 
-  def find(method)
+  def find(method : String)
     method = method.downcase
 
     result = [] of Array(String)
