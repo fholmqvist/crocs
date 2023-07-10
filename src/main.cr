@@ -1,6 +1,6 @@
 require "./*"
 
-cache_file = "cache.json"
+cache_file = "/home/#{get_path}/crocs/cache.json"
 version = "1.0"
 default_entries = ["Enumerable", "Hash", "String", "Time", "Set", "Enum"]
 

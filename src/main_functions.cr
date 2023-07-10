@@ -1,7 +1,7 @@
 require "http/client"
 require "lexbor"
 
-def fetch_from_official_docs(entries, docs, filename)
+def fetch_from_official_docs(entries, docs, file_path)
   channel = Channel({String, Doc, String | Nil}).new
 
   puts "Making requests to: #{entries.join(", ")}."
@@ -17,7 +17,9 @@ def fetch_from_official_docs(entries, docs, filename)
   puts "Saving to disk."
 
   json = docs.serialize
-  File.write(filename, %({"lookups": #{json}}))
+
+  create_file_and_folder(file_path)
+  File.write(file_path, %({"lookups": #{json}}), File::Permissions::OwnerAll)
 
   puts "Done."
 end
@@ -91,5 +93,31 @@ def print_results(results)
         end
       end
     end
+  end
+end
+
+def get_path
+  result_out, result_in = IO.pipe
+
+  res = Process.run("bash", ["-c", "echo $USER"], output: result_in)
+  result_in.close
+
+  unless res.success?
+    STDERR.puts "error: failed to echo user"
+    exit 3
+  end
+
+  result_out.try(&.gets_to_end).chomp
+end
+
+def create_file_and_folder(file_path)
+  folder_path = File.dirname(file_path)
+
+  unless Dir.exists?(folder_path)
+    Dir.mkdir_p(folder_path)
+  end
+
+  unless File.exists?(file_path)
+    File.new(file_path, "w")
   end
 end
