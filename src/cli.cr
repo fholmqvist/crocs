@@ -59,7 +59,7 @@ def parse_command_line_inputs(version, default_entries, cache_file, docs)
       exit(1)
     end
 
-    global_parser.unknown_args do |options|
+    parser.unknown_args do |options|
       if options.size == 2
         namespace, method = options
       elsif options.size == 1

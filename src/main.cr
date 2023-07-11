@@ -21,7 +21,7 @@ if missing.size > 1
   fetch_from_official_docs(missing, docs, cache_file)
 end
 
-global_parser, namespace, method = parse_command_line_inputs(version, default_entries, cache_file, docs)
+cli, namespace, method = parse_command_line_inputs(version, default_entries, cache_file, docs)
 
 if !docs.has_entry?(namespace)
   puts "Could not find entry '#{namespace}' in cache, downloading."
@@ -35,7 +35,7 @@ if errors.size > 0
     STDERR.puts "ERROR: #{error}"
   end
 
-  STDERR.puts "\n#{global_parser}"
+  STDERR.puts "\n#{cli}"
   exit
 end
 
