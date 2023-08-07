@@ -9,12 +9,14 @@ docs = Docs.new
 if !File.exists?(cache_file)
   puts "Could not find cache, downloading."
   fetch_from_official_docs(default_entries, docs, cache_file)
+else
+  puts "Loading cache."
 end
 
 contents = File.read(cache_file)
 docs = Docs.from_json(contents)
 
-missing = (docs.entries.to_set ^ default_entries.to_set).to_a
+missing = (default_entries.to_set - docs.entries.to_set).to_a
 
 if missing.size > 1
   puts "Not all entries were found in cache, downloading."
